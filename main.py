@@ -6,7 +6,7 @@ from os import path
 
 pygame.init()
 
-clock = pygame.time.Clock
+clock = pygame.time.Clock()
 fps = 60
 
 screen_width = 750
@@ -27,7 +27,9 @@ restart_img = pygame.image.load('img/restart_btn.png')
 restart_img = pygame.transform.scale(restart_img, (90, 30))
 
 start_img = pygame.image.load('img/start_btn.png')
+start_img = pygame.transform.scale(start_img, (180, 60))
 exit_img = pygame.image.load('img/exit_btn.png')
+exit_img = pygame.transform.scale(exit_img, (180, 60))
 
 tile_size = 38
 
@@ -49,6 +51,9 @@ def reset_level(level):
     lava_group.empty()
     exit_group.empty()
     platform_group.empty()
+    exit_group.empty()
+
+
 
     if level == 1:
         world_data = level1
@@ -201,9 +206,15 @@ class Player():
             self.rect.y += dy
 
 
-        elif game_over == -1:
+
+        if game_over == -1:
+
             self.image = self.dead_image
-            self.rect.y -= 3
+
+            draw_text('GAME OVER!', font, white, (screen_width // 2) - 200, screen_height // 2)
+
+            if self.rect.y > 200:
+                self.rect.y -= 5
         # draw player onto screen
         screen.blit(self.image, self.rect)
         return game_over
@@ -395,7 +406,7 @@ exit_button = Button(screen_width // 2 + 110, screen_height // 2, exit_img)
 
 run = True
 while run:
-
+    clock.tick(fps)
     screen.blit(bg_img, (0, 0))
 
     if main_menu == True:
@@ -424,6 +435,8 @@ while run:
                 world = reset_level(level)
                 game_over = 0
                 score = 0
+
+
 
             game_over = 0
         if game_over == 1:
